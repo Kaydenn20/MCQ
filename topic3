@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 3 Quiz</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.question {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+label {
+  display: block;
+  margin: 5px 0;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.result {
+  margin-top: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>Topic 3: Developing an Approach & Literature Review</h1>
+
+<div id="quiz"></div>
+
+<button onclick="submitQuiz()">Submit</button>
+
+<div id="result" class="result"></div>
+</div>
+
+<script>
+
+const quizData = [
+  {
+    q: "18. The right set of information helps managers make ____ decisions.",
+    options: ["economic", "informed", "important", "kind"],
+    answer: 1
+  },
+  {
+    q: "19. The 'problem statement' is a long essay.",
+    options: ["yes", "no"],
+    answer: 1
+  },
+  {
+    q: "20. Researchable problems involve ____ variables.",
+    options: [
+      "variables, measurement, analysis",
+      "relationships, variables, unit of analysis",
+      "case study, measurement, variables",
+      "pilot test, concept, relationships"
+    ],
+    answer: 1
+  },
+  {
+    q: "21. Researcher questions are questions asked to respondents.",
+    options: ["yes", "no"],
+    answer: 0
+  },
+  {
+    q: "22. Common verbs in research objectives include:",
+    options: [
+      "know, understand, conclude",
+      "identify, determine, measure, develop, examine",
+      "count, list, point",
+      "reduce, arrange, simplify"
+    ],
+    answer: 1
+  },
+  {
+    q: "23. Three Ws in research questions are:",
+    options: ["i, ii, iii", "iii, iv, v", "i, ii, vi", "ii, iii, vi"],
+    answer: 2
+  },
+  {
+    q: "24. Theoretical framework uses which variables?",
+    options: [
+      "independent, dependent, moderating, intervening",
+      "statistical, probability, case study",
+      "random, sample, error",
+      "pilot, test, design"
+    ],
+    answer: 0
+  },
+  {
+    q: "25. Directional hypothesis uses:",
+    options: [
+      "positive, negative, >, <",
+      "equal only",
+      "random words",
+      "no symbols"
+    ],
+    answer: 0
+  },
+  {
+    q: "26. Theoretical framework is aligned with research objectives.",
+    options: ["correct", "incorrect"],
+    answer: 1
+  },
+  {
+    q: "27. Literature review is a list of resources.",
+    options: ["yes", "no"],
+    answer: 1
+  },
+  {
+    q: "28. Literature review is a:",
+    options: ["sentence", "paragraph", "critique", "component"],
+    answer: 2
+  },
+  {
+    q: "29. Literature review EXCEPT:",
+    options: [
+      "identify variables",
+      "design methodology",
+      "uses primary data",
+      "avoid reinventing wheel"
+    ],
+    answer: 2
+  },
+  {
+    q: "30. Literature review follows steps.",
+    options: ["yes", "no"],
+    answer: 0
+  },
+  {
+    q: "31. EXCEPT negative behaviour in literature review:",
+    options: [
+      "ignore sources",
+      "wrong names",
+      "write good essay",
+      "bad documentation"
+    ],
+    answer: 2
+  },
+  {
+    q: "32. Annotated bibliography helps:",
+    options: ["accredited", "annotated", "extensive", "none"],
+    answer: 1
+  }
+];
+
+const quiz = document.getElementById("quiz");
+
+quizData.forEach((item, i) => {
+  let html = `<div class="question">
+    <p>${item.q}</p>`;
+
+  item.options.forEach((opt, j) => {
+    html += `
+      <label>
+        <input type="radio" name="q${i}" value="${j}">
+        ${opt}
+      </label>
+    `;
+  });
+
+  html += `</div>`;
+  quiz.innerHTML += html;
+});
+
+function submitQuiz() {
+  let score = 0;
+
+  quizData.forEach((item, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (selected && parseInt(selected.value) === item.answer) {
+      score++;
+    }
+  });
+
+  document.getElementById("result").innerText =
+    `Your Score: ${score} / ${quizData.length}`;
+}
+
+</script>
+
+</body>
+</html>
