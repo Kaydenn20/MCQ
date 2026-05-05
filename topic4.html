@@ -52,7 +52,6 @@ button {
   color: white;
   border: none;
   border-radius: 10px;
-  cursor: pointer;
   font-size: 16px;
 }
 
@@ -62,8 +61,8 @@ button:hover {
 
 .result {
   margin-top: 20px;
-  font-weight: bold;
   text-align: center;
+  font-weight: bold;
   font-size: 18px;
 }
 </style>
@@ -84,53 +83,114 @@ button:hover {
 <script>
 
 const quizData = [
+
 {
-q: "38. The research design is like a blueprint...",
+q: "38. The research design is like a blueprint and it describes the entire framework or plan for a research project.",
 options: ["Yes","No"],
 answer: 0
 },
+
 {
-q: `39. The followings are the characteristics of ___ research:
-i. To gain qualitative insights
-ii. Sampling is less strict
-iii. Small sample size
-iv. Flexible data collection`,
-options: ["Quantitative","Qualitative","Experimental","Survey"],
+q: `39. The followings are the characteristics of ___ research:<br><br>
+i. To gain qualitative insights and understanding of the problem (e.g. underlying reasons and motivations)<br>
+ii. Sampling is less stringent on representativeness and randomness<br>
+iii. Sample size is generally small<br>
+iv. Unstructured and flexible in data collection`,
+options: [
+"Quantitative research",
+"Qualitative research",
+"Experimental research",
+"Survey research"
+],
 answer: 1
 },
+
 {
 q: "40. Quantitative research is more statistical in nature.",
 options: ["Yes","No"],
 answer: 0
 },
+
 {
-q: `41. Characteristics of ____ data:
-i. For the problem
-ii. Complex collection
-iii. High cost
+q: `41. The following are characteristics of ____ data:<br><br>
+i. For the problem at hand<br>
+ii. Data collection process is complex and involved<br>
+iii. Cost incurred is relatively high<br>
 iv. Time consuming`,
 options: ["Secondary","Tertiary","Primary"],
 answer: 2
 },
+
 {
-q: "44. Identify NOT true link.",
+q: "42. Which one of the followings is NOT the disadvantage of longitudinal research?",
+options: [
+"Information takes a considerable period of time to collect",
+"Need good cooperation from respondents",
+"Information is obtained more than once and usually is more reliable",
+"Relatively expensive to carry out"
+],
+answer: 2
+},
+
+{
+q: "43. The depth interview has the following advantages EXCEPT:",
+options: [
+"Uncover greater depth of insights",
+"Always better than focus group",
+"Direct attribution of responses",
+"Free exchange of information"
+],
+answer: 1
+},
+
+{
+q: "44. Which link for categorization of the type of research design is NOT true?",
 image: "https://raw.githubusercontent.com/shafizal20/MCQ/main/images/question44.png",
 options: ["A","B","C","D"],
 answer: 1
 },
+
 {
-q: `48. Conditions for causality:
-Logical time sequence, ____ and control`,
+q: "45. Descriptive research usually will answer the 6 Ws questions.",
+options: ["Yes","No"],
+answer: 0
+},
+
+{
+q: "46. Causal research includes the followings EXCEPT:",
+options: [
+"Experiment",
+"Cause-and-effect relationship",
+"Manipulation of variables",
+"Cross-sectional descriptive research"
+],
+answer: 3
+},
+
+{
+q: "47. The followings are the advantages of Focus Groups EXCEPT:",
+options: [
+"Speed",
+"Synergy",
+"Structure",
+"Size"
+],
+answer: 3
+},
+
+{
+q: `48. The conditions for causality includes: Logical time sequence, ____ and control for other causal factors.`,
 options: [
 "Commitment",
 "Concomitant variation",
-"Measurement",
+"Concise measurement",
 "Co-creation"
 ],
 answer: 1
 },
+
 {
-q: `49. NOT a Projective Technique`,
+q: "49. Which of the following is NOT a Projective Technique?",
 options: [
 "Word association",
 "Sentence completion",
@@ -139,17 +199,17 @@ options: [
 ],
 answer: 2
 }
+
 ];
 
 const quiz = document.getElementById("quiz");
 
-// BUILD QUIZ
 quizData.forEach((item,i)=>{
 let html = `<div class="question">`;
-html += `<p>${item.q.replace(/\n/g,"<br>")}</p>`;
+html += `<p>${item.q}</p>`;
 
 if(item.image){
-html += `<img src="${item.image}" alt="image">`;
+html += `<img src="${item.image}">`;
 }
 
 item.options.forEach((opt,j)=>{
@@ -165,7 +225,6 @@ html += `</div>`;
 quiz.innerHTML += html;
 });
 
-// SUBMIT
 function submitQuiz(){
 let score = 0;
 
