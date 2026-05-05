@@ -1,205 +1,402 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Topic 2: Defining Problem and Research Objectives</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 2: Defining Problem and Research Objectives</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-<style>
-body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #f5f7fb;
-  margin: 0;
-  padding: 20px;
-  color: #1f2937;
-}
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f2f5f9;
+      padding: 24px 16px;
+    }
 
-.container {
-  max-width: 900px;
-  margin: auto;
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 14px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-}
+    .quiz-box {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 24px;
+      padding: 24px 28px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
 
-h1 {
-  text-align: center;
-  margin-bottom: 10px;
-}
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0a2b44;
+      text-align: center;
+      margin-bottom: 6px;
+    }
 
-.subtitle {
-  text-align: center;
-  color: #6b7280;
-  margin-bottom: 20px;
-  font-size: 14px;
-}
+    .sub {
+      text-align: center;
+      color: #4a627a;
+      font-size: 0.85rem;
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e9edf2;
+    }
 
-.question {
-  margin-bottom: 20px;
-  padding: 18px;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  background: #fafafa;
-}
+    .question {
+      background: #ffffff;
+      border: 1px solid #e9edf2;
+      border-radius: 20px;
+      padding: 18px 22px;
+      margin-bottom: 18px;
+      transition: 0.1s;
+    }
 
-label {
-  display: block;
-  margin: 6px 0;
-  cursor: pointer;
-}
+    .question.correct-bg {
+      background: #f0fdf4;
+      border-left: 5px solid #22c55e;
+    }
 
-input {
-  margin-right: 8px;
-}
+    .question.wrong-bg {
+      background: #fef2f2;
+      border-left: 5px solid #ef4444;
+    }
 
-button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 20px;
-  border: none;
-  border-radius: 10px;
-  background: #2563eb;
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-}
+    .q-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
 
-button:hover {
-  background: #1d4ed8;
-}
+    .q-num {
+      background: #e9edf2;
+      padding: 3px 12px;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #1a3e60;
+    }
 
-.result {
-  margin-top: 25px;
-  padding: 18px;
-  text-align: center;
-  font-weight: bold;
-  border-radius: 10px;
-  display: none;
-}
+    .q-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0f2b3d;
+      line-height: 1.45;
+      flex: 1;
+    }
 
-.correct { color: #16a34a; font-weight: 600; }
-.wrong { color: #dc2626; font-weight: 600; }
-</style>
+    .q-text p {
+      margin: 0 0 4px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 12px 0 6px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 14px;
+      background: #fafcff;
+      border: 1px solid #e4e9f0;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+
+    .option:hover {
+      background: #f0f5ff;
+    }
+
+    input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #2563eb;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .option-text {
+      font-size: 0.94rem;
+      color: #1e2f44;
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .feedback-correct {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 3px solid #22c55e;
+    }
+
+    .feedback-wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border-left: 3px solid #ef4444;
+    }
+
+    .feedback-missing {
+      background: #fff1e6;
+      color: #9a3412;
+      border-left: 3px solid #f97316;
+    }
+
+    .btn-submit {
+      background: #1e4a8a;
+      border: none;
+      width: 100%;
+      padding: 14px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      margin-top: 12px;
+      margin-bottom: 20px;
+      transition: 0.15s;
+    }
+
+    .btn-submit:hover {
+      background: #0f3a6e;
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+      background: #9bb5d0;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .score-area {
+      text-align: center;
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 16px;
+      margin-top: 8px;
+      border: 1px solid #e9edf2;
+    }
+
+    .score-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #0a2b44;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #7c8ea0;
+      margin-top: 24px;
+    }
+  </style>
 </head>
-
 <body>
+<div class="quiz-box">
+  <h1>📊 Topic 2: Defining Problem and Research Objectives</h1>
+  <div class="sub">3 multiple choice questions · submit once</div>
 
-<div class="container">
+  <div id="questionsContainer"></div>
 
-<h1>Topic 2: Defining Problem and Research Objectives</h1>
-<div class="subtitle">Answer all questions before submitting</div>
-
-<form id="quizForm"></form>
-
-<button onclick="submitQuiz()">Submit</button>
-
-<div id="resultBox" class="result"></div>
-
+  <button id="submitBtn" class="btn-submit">✓ Submit Quiz</button>
+  <div id="scorePanel" style="display: none;"></div>
+  <footer>Problem definition, research objectives, and key tasks</footer>
 </div>
 
 <script>
+  // ==============================================================
+  // TOPIC 2: DEFINING PROBLEM AND RESEARCH OBJECTIVES
+  // Questions 11-13 based on original specification
+  // Numbers shown only in bubble, not in question text
+  // ==============================================================
+  const quizData = [
+    { // Q11
+      text: "A/an ____ and ____ identified and defined problem enables research to be properly conducted.",
+      options: [
+        "nicely, beautifully",
+        "clearly, accurately",
+        "worldly, theoretically",
+        "empirically, economically"
+      ],
+      answer: 1,
+      image: null
+    },
+    { // Q12
+      text: "A good problem definition avoids unnecessary costs.",
+      options: ["Yes", "No"],
+      answer: 0,
+      image: null
+    },
+    { // Q13
+      text: "Which is NOT an important task in problem definition?",
+      options: [
+        "Search literature",
+        "Discuss experts",
+        "Doing qualitative research",
+        "Reporting final research"
+      ],
+      answer: 3,  // Reporting final research is not part of problem definition
+      image: null
+    }
+  ];
 
-const quizData = [
-  {
-    question: "11. A/an ____ and ____ identified and defined problem enables research to be properly conducted.",
-    options: [
-      "nicely, beautifully",
-      "clearly, accurately",
-      "worldly, theoretically",
-      "empirically, economically"
-    ],
-    answer: 1
-  },
-  {
-    question: "12. A good problem definition avoids unnecessary costs.",
-    options: ["Yes", "No"],
-    answer: 0
-  },
-  {
-    question: "13. Which is NOT an important task in problem definition?",
-    options: [
-      "Search literature",
-      "Discuss experts",
-      "Doing qualitative research",
-      "Reporting final research"
-    ],
-    answer: 3
-  }
-];
+  // user selections: -1 = unanswered
+  let selections = new Array(quizData.length).fill(-1);
+  let submitted = false;
 
-const quizForm = document.getElementById("quizForm");
+  const container = document.getElementById("questionsContainer");
+  const submitBtn = document.getElementById("submitBtn");
+  const scorePanel = document.getElementById("scorePanel");
 
-function loadQuiz() {
-  quizForm.innerHTML = "";
-
-  quizData.forEach((q, i) => {
-    const div = document.createElement("div");
-    div.className = "question";
-
-    let html = `<p><b>${q.question}</b></p>`;
-
-    q.options.forEach((opt, j) => {
-      html += `
-        <label>
-          <input type="radio" name="q${i}" value="${j}">
-          ${opt}
-        </label>
-      `;
-    });
-
-    html += `<div id="fb${i}"></div>`;
-    div.innerHTML = html;
-    quizForm.appendChild(div);
-  });
-}
-
-function submitQuiz() {
-  let score = 0;
-  let allAnswered = true;
-
-  quizData.forEach((q, i) => {
-    const selected = document.querySelector(`input[name="q${i}"]:checked`);
-    const fb = document.getElementById(`fb${i}`);
-
-    if (!selected) {
-      allAnswered = false;
-      fb.innerHTML = `<span class="wrong">Please answer this question</span>`;
-    } else {
-      if (parseInt(selected.value) === q.answer) {
-        score++;
-        fb.innerHTML = `<span class="correct">Correct ✓</span>`;
-      } else {
-        fb.innerHTML = `<span class="wrong">Incorrect ✗</span>`;
+  // render all questions
+  function renderQuestions() {
+    let html = "";
+    for (let i = 0; i < quizData.length; i++) {
+      const q = quizData[i];
+      const selectedVal = selections[i];
+      const realNumber = 11 + i;   // Q11 to Q13
+      
+      let questionClass = "question";
+      if (submitted) {
+        const isCorrect = (selectedVal !== -1 && selectedVal === q.answer);
+        if (isCorrect) questionClass += " correct-bg";
+        else questionClass += " wrong-bg";
+      }
+      
+      html += `<div class="${questionClass}">`;
+      html += `<div class="q-header">`;
+      html += `<span class="q-num">${realNumber}</span>`;
+      html += `<div class="q-text">`;
+      html += `<div>${q.text}</div>`;
+      html += `</div></div>`;
+      
+      // options
+      html += `<div class="options">`;
+      q.options.forEach((opt, optIdx) => {
+        const isChecked = (selectedVal === optIdx);
+        const disabledAttr = submitted ? "disabled" : "";
+        html += `
+          <label class="option" style="cursor: ${submitted ? 'default' : 'pointer'}">
+            <input type="radio" name="q${i}" value="${optIdx}" ${isChecked ? 'checked' : ''} ${disabledAttr}>
+            <span class="option-text">${opt}</span>
+          </label>
+        `;
+      });
+      html += `</div>`;
+      
+      // after submit: show feedback
+      if (submitted) {
+        if (selectedVal === -1) {
+          html += `<div class="feedback feedback-missing">⚠️ Not answered · Correct: ${q.options[q.answer]}</div>`;
+        } else if (selectedVal !== q.answer) {
+          html += `<div class="feedback feedback-wrong">❌ Incorrect · Your answer: ${q.options[selectedVal]}<br>✅ Correct: ${q.options[q.answer]}</div>`;
+        } else {
+          html += `<div class="feedback feedback-correct">✓ Correct</div>`;
+        }
+      }
+      
+      html += `</div>`;
+    }
+    container.innerHTML = html;
+    
+    // attach change events only if not submitted
+    if (!submitted) {
+      for (let i = 0; i < quizData.length; i++) {
+        const radios = document.querySelectorAll(`input[name="q${i}"]`);
+        radios.forEach(radio => {
+          radio.addEventListener("change", (e) => {
+            if (submitted) return;
+            selections[i] = parseInt(e.target.value);
+            renderQuestions();
+          });
+        });
       }
     }
-  });
-
-  if (!allAnswered) {
-    alert("Please answer ALL questions before submitting.");
-    return;
   }
-
-  const resultBox = document.getElementById("resultBox");
-  resultBox.style.display = "block";
-
-  resultBox.innerHTML =
-    `Score: ${score} / ${quizData.length}`;
-
-  // LMS PROGRESS SAVE (Topic 2)
-  let completed = JSON.parse(localStorage.getItem("completedTopics")) || [];
-
-  if (!completed.includes("topic2")) {
-    completed.push("topic2");
+  
+  // compute score
+  function getScore() {
+    let correct = 0;
+    for (let i = 0; i < quizData.length; i++) {
+      const selected = selections[i];
+      if (selected !== -1 && selected === quizData[i].answer) correct++;
+    }
+    return correct;
   }
-
-  localStorage.setItem("completedTopics", JSON.stringify(completed));
-}
-
-loadQuiz();
-
+  
+  // submit handler: one-time submission, no reset button
+  function handleSubmit() {
+    if (submitted) {
+      return;
+    }
+    
+    const answeredCount = selections.filter(s => s !== -1).length;
+    if (answeredCount < quizData.length) {
+      if (!confirm(`You have answered ${answeredCount} out of ${quizData.length}. Submit anyway?`)) {
+        return;
+      }
+    }
+    
+    submitted = true;
+    const correct = getScore();
+    const total = quizData.length;
+    
+    // re-render with highlights & feedback
+    renderQuestions();
+    
+    // show score panel
+    scorePanel.style.display = "block";
+    let message = "";
+    const percent = (correct / total) * 100;
+    
+    if (percent === 100) {
+      message = "Perfect! Mastery achieved. 🎉";
+    } else if (percent >= 70) {
+      message = "Great job! Review the ones in red.";
+    } else {
+      message = "Keep practicing. Review the explanations above.";
+    }
+    
+    scorePanel.innerHTML = `
+      <div class="score-area">
+        <div class="score-number">🏆 ${correct} / ${total}</div>
+        <div style="margin-top: 8px; font-size: 0.85rem; color: #2c5a6e;">${message}</div>
+      </div>
+    `;
+    
+    // disable submit button after submission
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = "0.6";
+    submitBtn.style.cursor = "default";
+    
+    // save progress to localStorage for LMS tracking
+    let completed = JSON.parse(localStorage.getItem("completedTopics")) || [];
+    if (!completed.includes("topic2")) {
+      completed.push("topic2");
+      localStorage.setItem("completedTopics", JSON.stringify(completed));
+    }
+    
+    // smooth scroll to score
+    setTimeout(() => {
+      scorePanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 80);
+  }
+  
+  submitBtn.addEventListener("click", handleSubmit);
+  
+  // initial render
+  renderQuestions();
 </script>
-
 </body>
 </html>
