@@ -81,6 +81,11 @@ button:hover {
   transition: 0.3s;
 }
 
+button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
 .result {
   margin-top: 20px;
   font-weight: bold;
@@ -136,6 +141,19 @@ button:hover {
   background: #fee2e2;
   color: #991b1b;
 }
+
+.submitted-disabled {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.submitted-disabled label {
+  cursor: default;
+}
+
+.submitted-disabled label:hover {
+  background: transparent;
+}
 </style>
 </head>
 
@@ -146,14 +164,16 @@ button:hover {
 
 <div id="quiz"></div>
 
-<button onclick="submitQuiz()">Submit Quiz</button>
-<button onclick="resetQuiz()" class="reset-btn">Reset All Answers</button>
+<button onclick="submitQuiz()" id="submitBtn">Submit Quiz</button>
+<button onclick="resetQuiz()" class="reset-btn" id="resetBtn">Reset All Answers</button>
 
 <div id="result" class="result"></div>
 <div id="detailedResult" style="margin-top: 20px;"></div>
 </div>
 
 <script>
+
+let isSubmitted = false; // Flag to track if quiz has been submitted
 
 const quizData = [
   {
@@ -224,9 +244,9 @@ iv. Time consuming`,
 
   {
     q: "44. Which link for categorization of the type of research design is NOT true?",
-    image: "",  // Removed image reference - you can add your image path here if needed
+    image: "https://raw.githubusercontent.com/shafizal20/MCQ/main/images/question44.png",
     options: ["A", "B", "C", "D"],
-    answer: 1,  // B is the answer (index 1)
+    answer: 1,
     explanation: "Based on research design categorization, option B is not a true link."
   },
 
@@ -294,7 +314,7 @@ quizData.forEach((item, i) => {
   html += `<p class="small-text">${item.q}</p>`;
   
   if (item.image && item.image !== "") {
-    html += `<img src="${item.image}" alt="question image">`;
+    html += `<img src="${item.image}" alt="question image" onerror="this.style.display='none'">`;
   }
   
   item.options.forEach((opt, j) => {
@@ -313,6 +333,11 @@ quizData.forEach((item, i) => {
 
 // Function to clear previous feedback when user changes answer
 function clearFeedback(questionIndex) {
+  if (isSubmitted) {
+    // If already submitted, don't allow changes
+    return;
+  }
+  
   const feedbackDiv = document.getElementById(`feedback${questionIndex}`);
   if (feedbackDiv) {
     feedbackDiv.innerHTML = '';
@@ -325,6 +350,12 @@ function clearFeedback(questionIndex) {
 }
 
 function submitQuiz() {
+  // Prevent multiple submissions
+  if (isSubmitted) {
+    alert("You have already submitted the quiz! Use Reset button if you want to try again.");
+    return;
+  }
+  
   let score = 0;
   let allAnswered = true;
   let unansweredQuestions = [];
@@ -370,6 +401,21 @@ function submitQuiz() {
     return;
   }
   
+  // Mark as submitted
+  isSubmitted = true;
+  
+  // Disable all radio buttons
+  const allRadios = document.querySelectorAll('input[type="radio"]');
+  allRadios.forEach(radio => {
+    radio.disabled = true;
+  });
+  
+  // Disable submit button, change reset button text
+  const submitBtn = document.getElementById("submitBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  submitBtn.disabled = true;
+  resetBtn.textContent = "Start Over / Reset Quiz";
+  
   const percentage = (score / quizData.length) * 100;
   let gradeMessage = '';
   if (percentage >= 90) {
@@ -392,10 +438,14 @@ function submitQuiz() {
 }
 
 function resetQuiz() {
+  // Reset submission flag
+  isSubmitted = false;
+  
   // Clear all radio selections
   const allRadios = document.querySelectorAll('input[type="radio"]');
   allRadios.forEach(radio => {
     radio.checked = false;
+    radio.disabled = false;
   });
   
   // Clear all feedback
@@ -412,21 +462,55 @@ function resetQuiz() {
   document.getElementById("result").className = 'result';
   document.getElementById("detailedResult").innerHTML = '';
   
+  // Re-enable submit button and reset reset button text
+  const submitBtn = document.getElementById("submitBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  submitBtn.disabled = false;
+  resetBtn.textContent = "Reset All Answers";
+  
   // Scroll to top
   window.scrollTo({ top: 0, behavior: 'smooth' });
   
-  // Optional: Show confirmation
+  // Show confirmation message
+  showTempMessage('Quiz has been reset! You can try again.', '#28a745');
+}
+
+function showTempMessage(message, color) {
   const tempMsg = document.createElement('div');
-  tempMsg.textContent = 'All answers have been reset!';
-  tempMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 10px; border-radius: 5px; z-index: 1000;';
+  tempMsg.textContent = message;
+  tempMsg.style.cssText = `position: fixed; top: 20px; right: 20px; background: ${color}; color: white; padding: 10px 20px; border-radius: 5px; z-index: 1000; animation: fadeInOut 2s ease-in-out;`;
   document.body.appendChild(tempMsg);
+  
+  // Add animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(-20px); }
+      15% { opacity: 1; transform: translateY(0); }
+      85% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-20px); }
+    }
+  `;
+  document.head.appendChild(style);
+  
   setTimeout(() => tempMsg.remove(), 2000);
 }
 
-// Add keyboard navigation (optional)
+// Add keyboard shortcut (Ctrl+Enter to submit only if not submitted)
 document.addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') {
+  if (e.ctrlKey && e.key === 'Enter' && !isSubmitted) {
+    e.preventDefault();
     submitQuiz();
+  }
+});
+
+// Prevent accidental page refresh warning if quiz is in progress but not submitted
+window.addEventListener('beforeunload', function(e) {
+  const anyAnswered = Array.from(document.querySelectorAll('input[type="radio"]:checked')).length > 0;
+  if (anyAnswered && !isSubmitted) {
+    e.preventDefault();
+    e.returnValue = 'You have unanswered questions. Are you sure you want to leave?';
+    return e.returnValue;
   }
 });
 
